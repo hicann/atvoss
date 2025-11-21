@@ -1,0 +1,12 @@
+approvers:
+- wly451717
+- wang-xiaozhi
+- zhuliangying
+
+reviewers:
+- wly451717
+- wang-xiaozhi
+- zhuliangying
+
+options:
+    no_parent_owners: true
