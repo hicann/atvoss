@@ -75,14 +75,7 @@
 
 ## 算子运行
 在代码仓目录下执行：
-- 默认运行模式
 ```bash
 cd ./examples
 bash run_examples.sh rms_norm
-```
-- profiling运行模式  
-该模式下可以使用性能调优工具来采集和分析运行在昇腾处理器上的任务各个运行阶段的关键性能指标，用户可根据输出的性能数据，快速定位软、硬件性能瓶颈，提升性能分析的效率。详见[性能调优工具](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/850alpha001/devaids/Profiling/atlasprofiling_16_0001.html)。
-```bash
-cd ./examples
-bash run_examples.sh rms_norm --run-mode=profiling
 ```

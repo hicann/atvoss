@@ -637,10 +637,4 @@ bool operator!=(const CompressedPair<T1, T2>& lhs, const CompressedPair<T1, T2>&
     return !(lhs == rhs);
 }
 }  // namespace Util
-template <typename T>
-struct type_displayer;
-
-#define CONCAT(x, y) x##y
-#define PASTE(x, y) CONCAT(x, y)
-#define TYPE_DISPLAY(x) type_displayer<decltype(x)> PASTE(type_, __LINE__)
 #endif

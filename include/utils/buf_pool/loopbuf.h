@@ -203,9 +203,6 @@ template<int tileNum, int tileSize>
 class LoopBuffer<AscendC::TPosition::VECCALC, tileNum, tileSize>
     : public LoopBufferEx<AscendC::TPosition::VECCALC, AscendC::TPosition::VECCALC, tileNum, tileSize> {
 };
-
-
-
 } //namespace ATVOS
 
 #endif //_LOOP_BUFFER_POOL_H_

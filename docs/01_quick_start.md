@@ -28,6 +28,9 @@ ATVOS支持源码编译，进行源码编译前，首先确保系统满足以下
         ```
 
 ## 环境准备
+- **安装驱动与固件（运行态依赖）**
+
+   模板算子运行时必须安装驱动与固件，安装指导详见《[CANN 软件安装指南](https://www.hiascend.com/document/redirect/CannCommunityInstSoftware)》。
 - **安装社区尝鲜版CANN toolkit包**
 
     根据实际环境，下载对应`Ascend-cann-toolkit_${cann_version}_linux-${arch}.run`包，下载链接为[toolkit x86_64包](https://ascend-cann.obs.cn-north-4.myhuaweicloud.com/CANN/2025111301_newest/Ascend-cann-toolkit_8.5.0.alpha001_linux-x86_64.run)、[toolkit aarch64包](https://ascend-cann.obs.cn-north-4.myhuaweicloud.com/CANN/2025111301_newest/Ascend-cann-toolkit_8.5.0.alpha001_linux-aarch64.run)。
@@ -78,7 +81,7 @@ git clone https://gitcode.com/cann/atvos-dev.git
    bash build.sh --pkg
    ```
 
-   编译完成后会在`build_out`目录下生成CANN-atvos-\<cann_version\>-linux.\<arch\>.run软件包。
+   编译完成后会在`build_out`目录下生成cann-atvos-\<cann_version\>-linux.\<arch\>.run软件包。
 
 2. 安装
 
@@ -90,7 +93,7 @@ git clone https://gitcode.com/cann/atvos-dev.git
    # 切换到run包生成路径下
    cd build_out
    # 安装run包
-   ./CANN-atvos-<cann_version>-linux.<arch>.run
+   ./cann-atvos-<cann_version>-linux.<arch>.run --full --quiet --install-path={$install_path}
    ```
    其中${install_path}详见[环境准备](#环境准备)章节说明
 
@@ -107,7 +110,16 @@ bash build.sh -t
 ```bash
 bash build.sh --test
 ```
+### UT测试显示覆盖率
 
+- 依赖项
+    - lcov >= 1.14
+
+- 执行命令
+
+```bash
+bash build.sh --test --cov
+```
 
 ## 样例运行验证
 开发者调用ATVOS实现自定义算子开发后，可通过单算子调用的方式验证算子功能。本仓提供部分算子实现及其调用样例，具体请参考[examples](../examples)目录下的样例。

@@ -75,7 +75,7 @@ create_atvos_include_softlink() {
 remove_relatively_softlink() {
   local path="$1"
   if [ -L "$1" ]; then
-    rm -fr ${path}
+    [ -n "${path}" ] && rm -fr ${path}
     return 0
   else
     return 1

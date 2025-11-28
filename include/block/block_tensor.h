@@ -77,7 +77,6 @@ public:
         return usage_;
     }
 
-
     __aicore__ inline void SetGmTensor(AscendC::GlobalTensor <T> gmTensor) 
     {
         gmTensor_ = gmTensor;
@@ -104,7 +103,6 @@ private:
     uint64_t curGmOffset_;
     int index_ = 0;
     ExprTmpl::ParamUsage usage_;
-
 };
 }
 #endif
