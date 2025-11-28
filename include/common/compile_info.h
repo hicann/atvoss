@@ -15,7 +15,7 @@
 namespace ATVOS {
 struct OpCompileInfo {
     uint64_t vectorCoreNum = 0;
-    uint64_t ubSize = 0;
+    uint64_t ubSize = 0;    
     uint64_t cacheLineSize = 0;
     uint64_t ubBlockSize = 0;
     OpCompileInfo(uint64_t a, uint64_t b, uint64_t c, uint64_t d)
