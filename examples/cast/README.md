@@ -33,6 +33,7 @@
       <th>参数名</th>
       <th>输入/输出/属性</th>
       <th>描述</th>
+      <th>数据类型</th>
       <th>数据格式</th>
     </tr></thead>
   <tbody>
@@ -40,12 +41,14 @@
       <td>x</td>
       <td>输入</td>
       <td>表示进行精度转换的输入。公式中的`x`。</td>
+      <td>half、float、int32_t</td>
       <td>ND</td>
     </tr>    
     <tr>
       <td>y</td>
       <td>输出</td>
       <td>精度转换后的结果。</td>
+      <td>half、float、int32_t</td>
       <td>ND</td>
     </tr>
   </tbody></table>
@@ -55,7 +58,7 @@
     - k <= 4
     - Mi <= 10240，i <= k
 - Tile块的Shape(m, n)，要满足m * n <=10240
-- 目前只支持Ascend C接口中的类型转换，详见[AscendC文档](https://www.hiascend.com/document/detail/zh/canncommercial/83RC1/API/ascendcopapi/atlasascendc_api_07_0073.html)
+- 目前只支持half、float、int32_t之间的类型转换，详见[AscendC文档](https://www.hiascend.com/document/detail/zh/canncommercial/83RC1/API/ascendcopapi/atlasascendc_api_07_0073.html)
 
 CastMode说明：  
 
@@ -85,14 +88,7 @@ enum class CastMode {
 
 ## 算子运行
 在代码仓目录下执行：
-- 默认运行模式
 ```bash
 cd ./examples
 bash run_examples.sh cast
-```
-- profiling运行模式  
-该模式下可以使用性能调优工具来采集和分析运行在昇腾处理器上的任务各个运行阶段的关键性能指标，用户可根据输出的性能数据，快速定位软、硬件性能瓶颈，提升性能分析的效率。详见[性能调优工具](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/850alpha001/devaids/Profiling/atlasprofiling_16_0001.html)。
-```bash
-cd ./examples
-bash run_examples.sh cast --run-mode=profiling
 ```

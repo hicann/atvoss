@@ -56,8 +56,8 @@ function compile_operator(){
         echo "Executing with profiling mode"
         bisheng -x asc --npu-arch=dav-2201 $TEST_NAME.cpp -o $TEST_NAME -I ${ATVOS_HOME_DIR}/include -I ${CURRENT_DIR}/common  -ltiling_api -lplatform -lm -ldl -L${_ASCEND_INSTALL_PATH}/lib64 -w -DATVOS_DEBUG_MODE=2 -DASCENDC_DUMP=0
     else
-        echo "--npu-mode is an optional parameter and can be left unset. If set, the value must be debug_print or profiling."
-        echo "Execution example: 'bash run_examples.sh $TEST_NAME --run-mode=debug_print'"
+        echo "--run-mode is an optional parameter and can be left unset. If set, the value must be profiling."
+        echo "Execution example: 'bash run_examples.sh $TEST_NAME --run-mode=profiling'"
         exit 1
     fi
 }

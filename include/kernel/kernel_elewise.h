@@ -41,7 +41,6 @@ static constexpr ATVOS::Kernel::PolicyEleWise policyDefault{48, 1, 0, 1, ATVOS::
 template <typename BlockOp, const auto &Policy, class OpTraits, typename Arguments>
 class DefaultSchedule
 {
-
 };
 /*!
  * KernelEleWise: Calculate the tiling information, then determine the GM data that the current core needs to process based on the block ID, 
