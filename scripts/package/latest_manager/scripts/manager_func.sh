@@ -629,7 +629,7 @@ get_package_install_type() {
         return 1
     fi
 
-    _install_type_gpit="$(grep -i "ATVOS_install_type=" "${_install_info}" | cut -d"=" -f2-)"
+    _install_type_gpit="$(grep -i "ATVOSS_install_type=" "${_install_info}" | cut -d"=" -f2-)"
     if [ "${_install_type_gpit}" = "" ]; then
         return 1
     fi
@@ -654,7 +654,7 @@ get_package_feature_type() {
     if [ "${_package}" = "opp" ]; then
         _feature_type_gpft="$(grep -i "^Opp_Install_Feature=" "${_install_info}" | cut -d"=" -f2-)"
     else
-        _feature_type_gpft="$(grep -i "ATVOS_feature_type=" "${_install_info}" | cut -d"=" -f2-)"
+        _feature_type_gpft="$(grep -i "ATVOSS_feature_type=" "${_install_info}" | cut -d"=" -f2-)"
     fi
     if [ "${_feature_type_gpft}" = "" ]; then
         _feature_type_gpft="all"
@@ -680,7 +680,7 @@ get_package_chip_type() {
     fi
 
     if [ "${_package}" = "opp" ]; then
-        _cihp_gpct="$(grep -i "ATVOS_chip_type=" "${_install_info}" | cut -d"=" -f2-)"
+        _cihp_gpct="$(grep -i "ATVOSS_chip_type=" "${_install_info}" | cut -d"=" -f2-)"
     else
         _cihp_gpct="$(grep -i "^\(${_package}_\)\?chip_type=" "${_install_info}" | cut -d"=" -f2-)"
     fi

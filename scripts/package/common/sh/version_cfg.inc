@@ -17,7 +17,7 @@
 # toolkit_running_version=[1.80:CANN-1.80]
 # fwkplugin_running_version=[1.80:CANN-1.80]
 # runtime_installed_version=[1.79:CANN-1.79][1.80:CANN-1.80]
-# atvos_installed_version=[1.79:CANN-1.79][1.80:CANN-1.80][1.81:CANN-1.81]
+# atvoss_installed_version=[1.79:CANN-1.79][1.80:CANN-1.80][1.81:CANN-1.81]
 # toolkit_installed_version=[1.79:CANN-1.79][1.80:CANN-1.80][1.81:CANN-1.81]
 # fwkplugin_installed_version=[1.79:CANN-1.79][1.80:CANN-1.80][1.81:CANN-1.81]
 

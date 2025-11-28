@@ -50,7 +50,7 @@ set(DLOG_HEAD_SEARCH_PATHS
   ${TOP_DIR}/abl/slog/inc/toolchain  # compile with ci
 )
 
-find_path(dlog_ATVOS_INCLUDE_DIR
+find_path(dlog_ATVOSS_INCLUDE_DIR
   NAMES dlog_pub.h
   NO_CMAKE_SYSTEM_PATH
   NO_CMAKE_FIND_ROOT_PATH
@@ -67,13 +67,13 @@ find_package_handle_standard_args(dlog
   FOUND_VAR
     dlog_FOUND
   REQUIRED_VARS
-    dlog_ATVOS_INCLUDE_DIR
+    dlog_ATVOSS_INCLUDE_DIR
 )
 
 if(dlog_FOUND)
   include(CMakePrintHelpers)
-  message(STATUS "atvos Variables in dlog module:")
-  cmake_print_variables(dlog_ATVOS_INCLUDE_DIR)
+  message(STATUS "atvoss Variables in dlog module:")
+  cmake_print_variables(dlog_ATVOSS_INCLUDE_DIR)
   cmake_print_variables(dlog_SHARED_LIBRARY)
 
   if(dlog_SHARED_LIBRARY)
@@ -85,14 +85,14 @@ if(dlog_FOUND)
     )
   endif()
 
-  set(ATVOS_INTERFACE_INCLUDE "${dlog_ATVOS_INCLUDE_DIR}")
-  string(FIND "${dlog_ATVOS_INCLUDE_DIR}" "toolchain" IDX)
+  set(ATVOSS_INTERFACE_INCLUDE "${dlog_ATVOSS_INCLUDE_DIR}")
+  string(FIND "${dlog_ATVOSS_INCLUDE_DIR}" "toolchain" IDX)
   if(NOT IDX EQUAL -1)
-    set(ATVOS_INTERFACE_INCLUDE "${CV_INTERFACE_INCLUDE};${dlog_ATVOS_INCLUDE_DIR}/..")
+    set(ATVOSS_INTERFACE_INCLUDE "${CV_INTERFACE_INCLUDE};${dlog_ATVOSS_INCLUDE_DIR}/..")
   endif()
   add_library(dlog_headers INTERFACE IMPORTED)
   set_target_properties(dlog_headers PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${ATVOS_INTERFACE_INCLUDE}"
+    INTERFACE_INCLUDE_DIRECTORIES "${ATVOSS_INTERFACE_INCLUDE}"
   )
 
   include(CMakePrintHelpers)

@@ -9,12 +9,12 @@
  */
 
 
-#ifndef ATVOS_DEV_MATH_H
-#define ATVOS_DEV_MATH_H
+#ifndef ATVOSS_DEV_MATH_H
+#define ATVOSS_DEV_MATH_H
 
 #include "common.h"
 
-namespace ATVOS::ExprTmpl {
+namespace ATVOSS::ExprTmpl {
 // Disallow dangerous expressions like (Expression{2}, 3)
     template<typename T, typename U>
     __host_aicore__ constexpr auto operator,(Expression<T> t, U &&u) = delete;
@@ -205,4 +205,4 @@ namespace ATVOS::ExprTmpl {
     DeclareBinaryOp(Max);
 
 }
-#endif //ATVOS_DEV_MATH_H
+#endif //ATVOSS_DEV_MATH_H

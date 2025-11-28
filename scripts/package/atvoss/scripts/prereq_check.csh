@@ -12,7 +12,7 @@
 set FILE_NOT_EXIST="0x0080"
 
 set cur_date=`date +"%Y-%m-%d %H:%M:%S"`
-echo "[ATVOS][${cur_date}][INFO]: Start pre installation check of atvos."
+echo "[ATVOSS][${cur_date}][INFO]: Start pre installation check of atvoss."
 python3 --version >/dev/null 2>&1
 if ($status != "0") then
 set cur_date=`date +"%Y-%m-%d %H:%M:%S"`

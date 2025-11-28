@@ -16,51 +16,80 @@
 #include <utility>
 #include <vector>
 #include "kernel_operator.h"
-#include "atvos.h"
+#include "atvoss.h"
 #include "example_common.h"
+#include "utils/layout/shape.h"
 
 static constexpr int32_t HEIGHT = 1;
 static constexpr int32_t WIDTH = 32;
 
-template<typename T>
-struct RmsNormOp : ATVOS::ExprTmpl::Maker {
-    using shape = AscendC::Shape<Int<HEIGHT>, Int<WIDTH>>;
-    using layout = AscendC::Std::tuple<shape>;
-    using maxSizeType = T;
-    template <template <typename> class VectorType>
-    __host_aicore__ constexpr auto Get() const
-    {
-        using namespace ATVOS::ExprTmpl;
-        auto _1 = DefineParam<1, VectorType<T>, layout>();
-        auto _2 = DefineParam<2, VectorType<T>, layout>();
-        auto _3 = DefineLocalVarLike<1>(_1);
-        auto _4 = DefineParam<3, VectorType<T>, layout, ParamUsage::out>();
+template <typename T1, typename T2, typename T3>
+struct RmsNormConfig {
+    using DtypeV1 = T1;
+    using DtypeV2 = T2;
+    using DtypeV3 = T3;
+    using TileShape = ATVOSS::Shape<HEIGHT, WIDTH>;
 
-        return (_3 = _1 *_1,
-                _4 = ReduceSum<ATVOS::Patterns::Pattern::AR>(_3),
-                _4 = Broadcast<ATVOS::Patterns::Pattern::AB>(_4),
-                _3 = Divs<WIDTH>(_4),
-                _4 = Sqrt(_3),
-                _3 = _1 / _4,
-                _4 = _2 * _3);
-    }
+    struct RmsNormCompute {
+        template <template <typename> class Tensor>
+        __host_aicore__ constexpr auto Compute() const
+        {
+            auto in1 = ATVOSS::PlaceHolder<1, Tensor<DtypeV1>, ATVOSS::ParamUsage::in>();
+            auto in2 = ATVOSS::PlaceHolder<2, Tensor<DtypeV2>, ATVOSS::ParamUsage::in>();
+            auto out = ATVOSS::PlaceHolder<3, Tensor<DtypeV3>, ATVOSS::ParamUsage::out>();
+            auto temp = ATVOSS::PlaceHolderTmpLike<1>(in1);
+
+            return (temp = in1 * in1,
+                    out = ReduceSum<ATVOSS::Patterns::Pattern::AR>(temp),
+                    out = Broadcast<ATVOSS::Patterns::Pattern::AB>(out),
+                    temp = Divs<WIDTH>(out),
+                    out = Sqrt(temp),
+                    temp = in1 / out,
+                    out = in2 * temp);
+        }
+    };
+
+    static constexpr ATVOSS::Block::BlockPolicy<TileShape> blockPolicy {
+        190 * 1024,
+        TileShape{}
+    };
+    static constexpr ATVOSS::Kernel::KernelPolicy kernelPolicy {
+        48, ATVOSS::Kernel::PolicySegment::UniformSegment
+    };
+
+    using BlockOp = ATVOSS::Block::BlockBuilder<
+        RmsNormCompute,
+        blockPolicy,
+        ATVOSS::Block::Config>;
+
+    using KernelOp =
+        ATVOSS::Kernel::KernelBuilder<
+            BlockOp,
+            kernelPolicy,
+            ATVOSS::Kernel::Config>;
+
+    using DeviceOp = ATVOSS::Device::DeviceAdapter<KernelOp>;
 };
 
-static constexpr ATVOS::Kernel::PolicyEleWise kernelPolicyWidthAssign{48, 1, WIDTH, 1, ATVOS::Kernel::PolicySegment::UniformSegment};
-static constexpr ATVOS::Block::PolicyEleWise blockPolicyWidthAssign{190 * 1024, WIDTH};
+int main()
+{
+    using Config = RmsNormConfig<float, float, float>;
+    std::vector<float> v1(32 * 32, 1.0F);
+    std::vector<float> v2(32 * 32, 2.0F);
+    std::vector<float> v3(32 * 32);
+    std::vector<float> golden(32 * 32, 2.0f);
+    uint32_t shape[2] = {32, 32};
 
-using BlockOp = ATVOS::Block::BlockEleWise<RmsNormOp<float>, blockPolicyWidthAssign>;
-using KernelOp = ATVOS::Kernel::KernelEleWise<BlockOp, kernelPolicyWidthAssign>;
-using DeviceOp = ATVOS::Device::DeviceAdapter<KernelOp>;
+    ATVOSS::Tensor<float> t1(v1.data(), shape);
+    ATVOSS::Tensor<float> t2(v2.data(), shape);
+    ATVOSS::Tensor<float> t3(v3.data(), shape);
 
-int main() {
-    std::vector<float> v1(32*32, 1.0F);
-    std::vector<float> v2(32*32, 2.0F);
-    std::vector<float> v3(32*32);
-    std::vector<float> golden(32*32, 2.0f);
-    std::vector<uint32_t> shape{32,32};
-    DeviceOp deviceOp(shape);
-    deviceOp.Run(v1, v2, v3);
+    // 生成入参信息
+    auto arguments = ATVOSS::ArgumentsBuilder{}.input(t1, t2).output(t3).build();
+
+    Config::DeviceOp deviceOp;
+    deviceOp.Run(arguments);
+
     if (!VerifyResults(golden, v3)) {
         return -1;
     }

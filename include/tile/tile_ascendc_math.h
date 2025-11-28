@@ -8,12 +8,12 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_DEV_TILE_ASCENDC_MATH_H
-#define ATVOS_DEV_TILE_ASCENDC_MATH_H
+#ifndef ATVOSS_DEV_TILE_ASCENDC_MATH_H
+#define ATVOSS_DEV_TILE_ASCENDC_MATH_H
 #include "lib/math/power.h"
 
 using namespace AscendC::Std;
-namespace ATVOS::Tile::Eval {
+namespace ATVOSS::Tile::Eval {
 
 /*!
  * \brief dst[i] = src0[i] + src1[i]
@@ -141,5 +141,5 @@ __aicore__ inline void CastAssign(AscendC::LocalTensor<T1>& dst, const AscendC::
         AscendC::Cast(dst, src, AscendC::RoundMode::CAST_ODD, operationShape.axis0);
     }
 }
-}  // namespace ATVOS::Tile::Eval
-#endif  //ATVOS_DEV_TILE_ASCENDC_MATH_H
+}  // namespace ATVOSS::Tile::Eval
+#endif  //ATVOSS_DEV_TILE_ASCENDC_MATH_H

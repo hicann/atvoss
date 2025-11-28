@@ -11,9 +11,9 @@
 
 curpath=$(dirname $(readlink -f "$0"))
 SCENE_FILE="${curpath}""/../scene.info"
-ATVOS_COMMON="${curpath}""/atvos_common.sh"
+ATVOSS_COMMON="${curpath}""/atvoss_common.sh"
 common_func_path="${curpath}/common_func.inc"
-. "${ATVOS_COMMON}"
+. "${ATVOSS_COMMON}"
 . "${common_func_path}"
 # init arch 
 architecture=$(uname -m)
@@ -41,16 +41,15 @@ while true; do
         ;;
     esac
 done
-get_version_dir "atvos_version_dir" "$install_path/$version_dir/atvos/version.info"
+get_version_dir "atvos_version_dir" "$install_path/$version_dir/atvoss/version.info"
 
-# create atvos soft link
-logandprint "[INFO]: Start create atvos softlinks."
-create_atvos_include_softlink "${install_path}/${version_dir}"
-return_code=$?
-if [ ${return_code} -eq 0 ]; then
-    logandprint "[INFO]: Create atvos softlinks successfully!"
-elif [ ${return_code} -eq 3 ]; then
-    logandprint "[WARNING]: atvos source file does not exist!"
-else
-    logandprint "[ERROR]: Create atvos softlinks failed!"
+if [ -z "$atvos_version_dir" ]; then
+    # before remove the oppkernel, remove the softlinks
+    logandprint "[INFO]: Start remove atvoss softlinks."
+    remove_atvos_include_softlink ${install_path}/${version_dir}
+    if [ $? -ne 0 ]; then
+        logandprint "[WARNING]: Remove atvoss softlinks failed, some softlinks may not exist."
+    else
+        logandprint "[INFO]: Remove atvoss softlinks successfully."
+    fi
 fi

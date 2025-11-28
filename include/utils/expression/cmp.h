@@ -8,7 +8,7 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_DEV_CMP_H
-#define ATVOS_DEV_CMP_H
+#ifndef ATVOSS_DEV_CMP_H
+#define ATVOSS_DEV_CMP_H
 
-#endif //ATVOS_DEV_CMP_H
+#endif //ATVOSS_DEV_CMP_H

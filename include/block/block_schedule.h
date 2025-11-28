@@ -8,27 +8,11 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOSS_DEV_PATTERNS_H
-#define ATVOSS_DEV_PATTERNS_H
-namespace ATVOSS::Patterns {
-    enum class Pattern {
-        AR,
-        RA,
-        AB,
-        BA
-    };
-
-};
-
-namespace ATVOSS {
-    enum class CastMode {
-        CAST_NONE = 0,
-        CAST_RINT,
-        CAST_FLOOR,
-        CAST_CEIL,
-        CAST_ROUND,
-        CAST_TRUNC,
-        CAST_ODD
-    };
-}
-#endif //ATVOSS_DEV_PATTERNS_H
+#ifndef ATVOSS_INCLUDE_BLOCK_SCHEDULE_H_
+#define ATVOSS_INCLUDE_BLOCK_SCHEDULE_H_
+#include "base_schedule.h"
+namespace ATVOSS::Block {
+template <typename ExprMaker, const auto& Policy, typename Arguments>
+class DefaultSchedule : public BaseBlockSchedule<ExprMaker, Policy, Arguments> {};
+} // namespace ATVOSS::Block
+#endif // ATVOSS_INCLUDE_KERNEL_KERNEL_SCHEDULE_H_

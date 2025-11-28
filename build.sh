@@ -94,7 +94,7 @@ export BASE_PATH=$(
 )
 export BUILD_PATH="${BASE_PATH}/build"
 export BUILD_OUT_PATH="${BASE_PATH}/build_out"
-REPOSITORY_NAME="atvos"
+REPOSITORY_NAME="atvoss"
 
 CORE_NUMS=$(cat /proc/cpuinfo | grep "processor" | wc -l)
 ARCH_INFO=$(uname -m)
@@ -141,7 +141,7 @@ usage() {
     esac
   fi
 
-  echo "build script for atvos repository"
+  echo "build script for atvoss repository"
   echo "Usage:"
   echo "    bash build.sh [-h] [-j[n]] [-v] [-t] [--pkg]"
   echo ""

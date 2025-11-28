@@ -8,27 +8,11 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOSS_DEV_PATTERNS_H
-#define ATVOSS_DEV_PATTERNS_H
-namespace ATVOSS::Patterns {
-    enum class Pattern {
-        AR,
-        RA,
-        AB,
-        BA
-    };
-
-};
-
-namespace ATVOSS {
-    enum class CastMode {
-        CAST_NONE = 0,
-        CAST_RINT,
-        CAST_FLOOR,
-        CAST_CEIL,
-        CAST_ROUND,
-        CAST_TRUNC,
-        CAST_ODD
-    };
-}
-#endif //ATVOSS_DEV_PATTERNS_H
+#ifndef ATVOSS_H
+#define ATVOSS_H
+#include "utils/expression/expression.h"
+#include "tile/tile_elewise.h"
+#include "block/block_elewise.h"
+#include "kernel/kernel_elewise.h"
+#include "device/device_adapter.h"
+#endif

@@ -2,7 +2,7 @@
 
 ## 依赖项
 
-ATVOS支持源码编译，进行源码编译前，首先确保系统满足以下要求：
+ATVOSS支持源码编译，进行源码编译前，首先确保系统满足以下要求：
 
 -  **AI处理器型号**
     - Ascend 910C
@@ -69,23 +69,23 @@ ATVOS支持源码编译，进行源码编译前，首先确保系统满足以下
 ## 源码下载
 
 ```bash
-git clone https://gitcode.com/cann/atvoss.git
+git clone https://gitcode.com/cann/atvoss-dev.git
 ```
 ## 编译安装
 
 1. 编译
 
-   ATVOS仓提供一键式编译安装能力，进入本开源仓代码根目录，执行如下命令：
+   ATVOSS仓提供一键式编译安装能力，进入本开源仓代码根目录，执行如下命令：
 
    ```bash
    bash build.sh --pkg
    ```
 
-   编译完成后会在`build_out`目录下生成cann-atvos-\<cann_version\>-linux.\<arch\>.run软件包。
+   编译完成后会在`build_out`目录下生成cann-atvoss-\<cann_version\>-linux.\<arch\>.run软件包。
 
 2. 安装
 
-   在开源仓根目录下执行下列命令，根据设置的环境变量路径，将编译生成的run包安装到CANN包的装包路径，同时会覆盖原CANN包中的ATVOS内容。
+   在开源仓根目录下执行下列命令，根据设置的环境变量路径，将编译生成的run包安装到CANN包的装包路径，同时会覆盖原CANN包中的ATVOSS内容。
 
    ```bash
    # 设置CANN开发套件包环境变量，以root用户默认路径为例，如已设置，则可忽略该操作
@@ -93,7 +93,7 @@ git clone https://gitcode.com/cann/atvoss.git
    # 切换到run包生成路径下
    cd build_out
    # 安装run包
-   ./cann-atvos-<cann_version>-linux.<arch>.run --full --quiet --install-path={$install_path}
+   ./cann-atvoss-<cann_version>-linux.<arch>.run --full --quiet --install-path={$install_path}
    ```
    其中${install_path}详见[环境准备](#环境准备)章节说明
 
@@ -122,7 +122,7 @@ bash build.sh --test --cov
 ```
 
 ## 样例运行验证
-开发者调用ATVOS实现自定义算子开发后，可通过单算子调用的方式验证算子功能。本仓提供部分算子实现及其调用样例，具体请参考[examples](../examples)目录下的样例。
+开发者调用ATVOSS实现自定义算子开发后，可通过单算子调用的方式验证算子功能。本仓提供部分算子实现及其调用样例，具体请参考[examples](../examples)目录下的样例。
 
 以`rms_norm`算子样例为例，说明样例运行验证的步骤：调用以下命令编译代码并执行：
 ```bash

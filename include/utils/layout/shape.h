@@ -8,11 +8,21 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_H
-#define ATVOS_H
-#include "utils/expression/expression.h"
-#include "tile/tile_elewise.h"
-#include "block/block_elewise.h"
-#include "kernel/kernel_elewise.h"
-#include "device/device_adapter.h"
-#endif
+#ifndef ATVOSS_INCLUDE_UTILS_SHAPE_H_
+#define ATVOSS_INCLUDE_UTILS_SHAPE_H_
+namespace ATVOSS {
+
+template <int... a>
+class Shape {
+public:
+    using Types = std::tuple<Int<a>...>;
+
+    template <size_t N>
+    using get_type = typename std::tuple_element_t<N, Types>;
+
+    using size = Int<sizeof...(a)>;
+};
+
+} // namespace ATVOSS
+
+#endif // ATVOSS_INCLUDE_UTILS_SHAPE_H_

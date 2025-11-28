@@ -9,17 +9,26 @@
  */
 
 #include <algorithm>
+#include <numeric>
 #include "acl/acl.h"
-namespace ATVOS::Device {
+#include "utils/tensor.h"
+namespace ATVOSS::Device {
 
 template <typename T>
-class Tensor {
+class DeviceTensor {
 public:
-    Tensor() = default;
-    explicit Tensor(std::vector<T>& src)
+    DeviceTensor() = default;
+    explicit DeviceTensor(ATVOSS::Tensor<T>& src)
     {
-        SetSize(src.size());
-        src_ = &src;
+        std::vector<uint32_t> shapeVector = src.shape_vector();
+        uint64_t totalElements = std::accumulate(
+            shapeVector.begin(), 
+            shapeVector.end(), 
+            1ULL,
+            std::multiplies<uint64_t>()
+        );
+        SetSize(totalElements);
+        src_ = src.data();
     }
 
     T& operator[](std::size_t pos)
@@ -33,16 +42,18 @@ public:
 
     void Clear()
     {
-        delete[] ptr_;
-        ptr_ = nullptr;
-        len_ = 0;
+        if(ptr_ != nullptr){
+            delete[] ptr_;
+            ptr_ = nullptr;
+            len_ = 0;
+        }
     }
 
     void SetSize(std::size_t size)
     {
         if (ptr_ != nullptr) {
             throw std::logic_error(
-                "[ERROR]: [ATVOS][Device] MyTensor::SetSize can only be called on an empty object");
+                "[ERROR]: [ATVOSS][Device] DeviceTensor::SetSize can only be called on an empty object");
         }
         aclrtMalloc((void **)&ptr_, size * sizeof(T), ACL_MEM_MALLOC_HUGE_FIRST);
         len_ = size;
@@ -56,25 +67,19 @@ public:
         return (uint8_t* )ptr_;
     }
 
-    void CopyIn(const std::vector<T>& src)
+    void CopyIn()
     {
-        if (src.size() > len_) {
-            throw std::logic_error("[ERROR]: [ATVOS][Device] Source vector is too big");
-        }
-        aclrtMemcpy(ptr_, len_ * sizeof(T), src_->data(), len_ * sizeof(T), ACL_MEMCPY_HOST_TO_DEVICE);
+        aclrtMemcpy(ptr_, len_ * sizeof(T), src_, len_ * sizeof(T), ACL_MEMCPY_HOST_TO_DEVICE);
     }
 
-    void CopyOut(std::vector<T>& dst)
+    void CopyOut()
     {
-        if (dst.size() < len_) {
-            throw std::logic_error("[ERROR]: [ATVOS][Device] Destination vector is too small");
-        }
-        aclrtMemcpy(src_->data(), len_ * sizeof(T), ptr_, len_ * sizeof(T), ACL_MEMCPY_DEVICE_TO_HOST);
+        aclrtMemcpy(src_, len_ * sizeof(T), ptr_, len_ * sizeof(T), ACL_MEMCPY_DEVICE_TO_HOST);
     }
 
 private:
-    T* ptr_{};
+    T* ptr_{}; 
     std::size_t len_{};
-    std::vector<T>* src_;
+    T* src_;
 };
 }

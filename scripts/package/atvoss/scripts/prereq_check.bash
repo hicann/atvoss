@@ -17,10 +17,10 @@ log() {
     local content cur_date
     content=$(echo "$@" | cut -d" " -f2-)
     cur_date="$(date +'%Y-%m-%d %H:%M:%S')"
-    echo "[ATVOS] [$cur_date] [$1]: $content"
+    echo "[ATVOSS] [$cur_date] [$1]: $content"
 }
 
-log "INFO" "ATVOS do pre check started."
+log "INFO" "ATVOSS do pre check started."
 
 log "INFO" "Check pip version."
 which pip3 > /dev/null 2>&1
@@ -37,4 +37,4 @@ if [ -f "$common_interface" ]; then
     py_version_check
 fi
 
-log "INFO" "ATVOS do pre check finished."
+log "INFO" "ATVOSS do pre check finished."

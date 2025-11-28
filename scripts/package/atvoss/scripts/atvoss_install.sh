@@ -30,31 +30,31 @@ SCENE_FILE="${CURR_PATH}/../scene.info"
 ASCEND_INSTALL_INFO="ascend_install.info"
 
 ARCH_INFO=$(uname -m)
-ATVOS_PLATFORM_DIR=atvos
-ATVOS_PLATFORM_UPPER=$(echo "${ATVOS_PLATFORM_DIR}" | tr '[:lower:]' '[:upper:]')
+ATVOSS_PLATFORM_DIR=atvoss
+ATVOSS_PLATFORM_UPPER=$(echo "${ATVOSS_PLATFORM_DIR}" | tr '[:lower:]' '[:upper:]')
 
 TARGET_INSTALL_PATH=""
-TARGET_MOULDE_DIR=""  # TARGET_INSTALL_PATH + PKG_VERSION_DIR + ATVOS_PLATFORM_DIR
+TARGET_MOULDE_DIR=""  # TARGET_INSTALL_PATH + PKG_VERSION_DIR + ATVOSS_PLATFORM_DIR
 TARGET_VERSION_DIR="" # TARGET_INSTALL_PATH + PKG_VERSION_DIR
 
 COMMON_INC_FILE="${CURR_PATH}/common_func.inc"
 COMMON_FUNC_V2_PATH="${CURR_PATH}/common_func_v2.inc"
 VERSION_CFG="${CURR_PATH}/version_cfg.inc"
-ATVOS_COMMON_FILE="${CURR_PATH}/atvos_common.sh"
+ATVOSS_COMMON_FILE="${CURR_PATH}/atvoss_common.sh"
 
 . "${COMMON_INC_FILE}"
 . "${COMMON_FUNC_V2_PATH}"
 . "${VERSION_CFG}"
-. "${ATVOS_COMMON_FILE}"
+. "${ATVOSS_COMMON_FILE}"
 
 # keys of infos in ascend_install.info
 KEY_INSTALLED_UNAME="USERNAME"
 KEY_INSTALLED_UGROUP="USERGROUP"
-KEY_INSTALLED_TYPE="${ATVOS_PLATFORM_UPPER}_INSTALL_TYPE"
-KEY_INSTALLED_FEATURE="${ATVOS_PLATFORM_UPPER}_INSTALL_FEATURE"
-KEY_INSTALLED_CHIP="${ATVOS_PLATFORM_UPPER}_INSTALL_CHIP"
-KEY_INSTALLED_PATH="${ATVOS_PLATFORM_UPPER}_INSTALL_PATH_VAL"
-KEY_INSTALLED_VERSION="${ATVOS_PLATFORM_UPPER}_VERSION"
+KEY_INSTALLED_TYPE="${ATVOSS_PLATFORM_UPPER}_INSTALL_TYPE"
+KEY_INSTALLED_FEATURE="${ATVOSS_PLATFORM_UPPER}_INSTALL_FEATURE"
+KEY_INSTALLED_CHIP="${ATVOSS_PLATFORM_UPPER}_INSTALL_CHIP"
+KEY_INSTALLED_PATH="${ATVOSS_PLATFORM_UPPER}_INSTALL_PATH_VAL"
+KEY_INSTALLED_VERSION="${ATVOSS_PLATFORM_UPPER}_VERSION"
 
 get_opts() {
   TARGET_INSTALL_PATH="$1"
@@ -87,7 +87,7 @@ init_install_env() {
   else
     TARGET_VERSION_DIR=${TARGET_INSTALL_PATH}/${PKG_VERSION_DIR}
   fi
-  TARGET_MOULDE_DIR=${TARGET_VERSION_DIR}/${ATVOS_PLATFORM_DIR}
+  TARGET_MOULDE_DIR=${TARGET_VERSION_DIR}/${ATVOSS_PLATFORM_DIR}
   INSTALL_INFO_FILE=${TARGET_MOULDE_DIR}/${ASCEND_INSTALL_INFO}
 
   if [ "$(id -u)" != "0" ]; then
@@ -348,7 +348,7 @@ create_latest_softlink() {
 }
 
 install_atvos() {
-  logandprint "[INFO]: Begin install atvos."
+  logandprint "[INFO]: Begin install atvoss."
   local version_mod=""
   local module_mod=""
   if [ -d ${TARGET_VERSION_DIR} ]; then
@@ -368,16 +368,16 @@ install_atvos() {
 
   setenv
 
-  logandprint "[INFO]: Update the atvos install info."
+  logandprint "[INFO]: Update the atvoss install info."
 
   update_install_infos "${TARGET_USERNAME}" "${TARGET_USERGROUP}" "${INSTALL_TYPE}" "${relative_path_val}"
-  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${INSTALL_FAILED};ERR_DES:Update atvos install info failed."
+  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${INSTALL_FAILED};ERR_DES:Update atvoss install info failed."
 
-  bash "${COMMON_PARSER_FILE}" --package="${ATVOS_PLATFORM_DIR}" --install --username="${TARGET_USERNAME}" \
+  bash "${COMMON_PARSER_FILE}" --package="${ATVOSS_PLATFORM_DIR}" --install --username="${TARGET_USERNAME}" \
     --usergroup="${TARGET_USERGROUP}" --set-cann-uninstall --version=$RUN_PKG_VERSION \
     --version-dir=$PKG_VERSION_DIR $INSTALL_OPTION ${INSTALL_FOR_ALL} "--feature=all" "--chip=all" \
     "${INSTALL_TYPE}" "${TARGET_INSTALL_PATH}" "${FILELIST_FILE}"
-  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${INSTALL_FAILED};ERR_DES:Install atvos files failed."
+  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${INSTALL_FAILED};ERR_DES:Install atvoss files failed."
 
   logandprint "[INFO]: upgradePercentage:30%"
 
@@ -400,8 +400,8 @@ main() {
 
   init_install_env
 
-  get_package_upgrade_version_dir "upgrade_version_dir" "$TARGET_INSTALL_PATH" "${ATVOS_PLATFORM_DIR}"
-  get_package_last_installed_version "last_installed" "$TARGET_INSTALL_PATH" "${ATVOS_PLATFORM_DIR}"
+  get_package_upgrade_version_dir "upgrade_version_dir" "$TARGET_INSTALL_PATH" "${ATVOSS_PLATFORM_DIR}"
+  get_package_last_installed_version "last_installed" "$TARGET_INSTALL_PATH" "${ATVOSS_PLATFORM_DIR}"
   last_installed_version=$(echo ${last_installed} | cut --only-delimited -d":" -f2-)
 
   get_install_path
@@ -432,7 +432,7 @@ main() {
 
   # change installed folder's owner and group except aicpu
   chown "${TARGET_USERNAME}":"${TARGET_USERGROUP}" "${TARGET_MOULDE_DIR}" 2>/dev/null
-  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${INSTALL_FAILED};ERR_DES:Change atvos onwership failed.."
+  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${INSTALL_FAILED};ERR_DES:Change atvoss onwership failed.."
 
   logandprint "[INFO]: upgradePercentage:100%"
 
@@ -441,7 +441,7 @@ main() {
   logandprint "[INFO]: Install log file path: (${COMM_LOGFILE})"
   logandprint "[INFO]: Operation log file path: (${COMM_OPERATION_LOGFILE})"
 
-  logandprint "[INFO]: atvos package installed successfully! The new version takes effect immediately."
+  logandprint "[INFO]: atvoss package installed successfully! The new version takes effect immediately."
 }
 
 main "$@"

@@ -9,23 +9,23 @@
 # -----------------------------------------------------------------------------------------------------------
 
 cmake_minimum_required(VERSION 3.16.0)
-set(PKG_NAME atvos)
+set(PKG_NAME atvoss)
 project(${PKG_NAME} VERSION 1.0.0)
 
 include(CMakePrintHelpers)
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-    message(STATUS "Build atvos with dependency cann pkgs installed")
-    option(BUILD_WITH_INSTALLED_DEPENDENCY_CANN_PKG "Build atvos with dependency cann pkgs installed" TRUE)
+    message(STATUS "Build atvoss with dependency cann pkgs installed")
+    option(BUILD_WITH_INSTALLED_DEPENDENCY_CANN_PKG "Build atvoss with dependency cann pkgs installed" TRUE)
 else()
-    message(STATUS "Build atvos with cann source exist")
-    option(BUILD_WITH_INSTALLED_DEPENDENCY_CANN_PKG "Build atvos need cann source code" FALSE)
+    message(STATUS "Build atvoss with cann source exist")
+    option(BUILD_WITH_INSTALLED_DEPENDENCY_CANN_PKG "Build atvoss need cann source code" FALSE)
 endif()
 
 if(UNIX)
   set(SYSTEM_PREFIX ${CMAKE_SYSTEM_PROCESSOR}-linux)
 endif()
-set(ATVOS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(ATVOSS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # 外部传参
 option(ENABLE_ASAN "Enable asan" OFF)
@@ -66,12 +66,12 @@ if(ENABLE_TEST)
 endif()
 
 install(DIRECTORY include
-  DESTINATION atvos/
+  DESTINATION atvoss/
 )
 
 if(NOT BUILD_WITH_INSTALLED_DEPENDENCY_CANN_PKG)
   install(DIRECTORY include
-    DESTINATION lib/asc/atvos/
+    DESTINATION lib/asc/atvoss/
   )
 endif()
 

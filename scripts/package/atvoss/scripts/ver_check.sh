@@ -21,7 +21,7 @@ getdate() {
 }
 
 logandprint() {
-  echo "[ATVOS] [$(getdate)] ""$1"
+  echo "[ATVOSS] [$(getdate)] ""$1"
 }
 
 check_path_pre() {
@@ -95,11 +95,11 @@ check_version_file() {
 check_atvos_version_file() {
   if [ -f "${_CURR_PATH}/../../version.info" ]; then
     ver_info="${_CURR_PATH}/../../version.info"
-  # atvos/version.info -> atvos
-  elif [ -f "${_DEFAULT_INSTALL_PATH}/atvos/version.info" ]; then
-    ver_info="${_DEFAULT_INSTALL_PATH}/atvos/version.info"
+  # atvoss/version.info -> atvoss
+  elif [ -f "${_DEFAULT_INSTALL_PATH}/atvoss/version.info" ]; then
+    ver_info="${_DEFAULT_INSTALL_PATH}/atvoss/version.info"
   else
-    logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST}; The [atvos] version.info not exists."
+    logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST}; The [atvoss] version.info not exists."
   fi
   return
 }
@@ -124,10 +124,10 @@ show_relation() {
   req_pkg_name_val="$2"
   req_pkg_path="$3"
   if [ "$relation_situation" = "SUCC" ]; then
-    logandprint "[INFO]: Relationship of atvos with ${req_pkg_name_val} in path ${req_pkg_path} check successfully"
+    logandprint "[INFO]: Relationship of atvoss with ${req_pkg_name_val} in path ${req_pkg_path} check successfully"
     return 0
   else
-    logandprint "[WARNING]: Relationship of atvos with ${req_pkg_name_val} in path ${req_pkg_path} check failed. \
+    logandprint "[WARNING]: Relationship of atvoss with ${req_pkg_name_val} in path ${req_pkg_path} check failed. \
 do you want to continue.  [y/n] "
     while true; do
       read yn
@@ -145,7 +145,7 @@ do you want to continue.  [y/n] "
 
 version_check() {
   path_val="$1"
-  #get atvos version
+  #get atvoss version
   check_atvos_version_file
   ret_check_atvos_version_file=$ver_info
   #get checked path

@@ -8,10 +8,10 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_DEV_TILE_EVALUATOR_H
-#define ATVOS_DEV_TILE_EVALUATOR_H
+#ifndef ATVOSS_DEV_TILE_EVALUATOR_H
+#define ATVOSS_DEV_TILE_EVALUATOR_H
 #include "tile_evaluator_math.h"
 #include "tile_evaluator_transcendental.h"
 #include "tile_operator.h"
 
-#endif //ATVOS_DEV_TILE_EVALUATOR_H
+#endif //ATVOSS_DEV_TILE_EVALUATOR_H
