@@ -69,7 +69,7 @@ ATVOS支持源码编译，进行源码编译前，首先确保系统满足以下
 ## 源码下载
 
 ```bash
-git clone https://gitcode.com/cann/atvos-dev.git
+git clone https://gitcode.com/cann/atvoss.git
 ```
 ## 编译安装
 
