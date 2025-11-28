@@ -8,44 +8,44 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_DEV_TRANSCENDENTAL_H
-#define ATVOS_DEV_TRANSCENDENTAL_H
+#ifndef ATVOSS_DEV_TRANSCENDENTAL_H
+#define ATVOSS_DEV_TRANSCENDENTAL_H
 
 #include "common.h"
 
-namespace ATVOS::ExprTmpl {
-    template<ATVOS::Patterns::Pattern pattern, typename T>
+namespace ATVOSS::ExprTmpl {
+    template<ATVOSS::Patterns::Pattern pattern, typename T>
     struct OpReduceSum : UnaryOp<T> {
         OpReduceSum() = default;
 
         constexpr OpReduceSum(T t) : UnaryOp<T>(t) {}
     };
 
-    template<ATVOS::Patterns::Pattern pattern, typename T>
+    template<ATVOSS::Patterns::Pattern pattern, typename T>
     __host_aicore__ constexpr auto ReduceSum(Expression<T> lhs) {
         return Expression<OpReduceSum<pattern, T>>{{lhs.data}};
     }
 
-    template<ATVOS::Patterns::Pattern pattern, typename T>
+    template<ATVOSS::Patterns::Pattern pattern, typename T>
     __host_aicore__ constexpr auto ReduceSum(T &&lhs) {
         return Expression<OpReduceSum<pattern, T>>{{std::forward<T>(lhs)}};
     }
 
-    template<ATVOS::Patterns::Pattern pattern, typename T>
+    template<ATVOSS::Patterns::Pattern pattern, typename T>
     struct OpBroadcast : UnaryOp<T> {
         OpBroadcast() = default;
 
         constexpr OpBroadcast(T t) : UnaryOp<T>(t) {}
     };
 
-    template<ATVOS::Patterns::Pattern pattern, typename T>
+    template<ATVOSS::Patterns::Pattern pattern, typename T>
     __host_aicore__ constexpr auto Broadcast(Expression<T> lhs) {
         return Expression<OpBroadcast<pattern, T>>{{lhs.data}};
     }
 
-    template<ATVOS::Patterns::Pattern pattern, typename T>
+    template<ATVOSS::Patterns::Pattern pattern, typename T>
     __host_aicore__ constexpr auto Broadcast(T &&lhs) {
         return Expression<OpBroadcast<pattern, T>>{{std::forward<T>(lhs)}};
     }
 }
-#endif //ATVOS_DEV_TRANSCENDENTAL_H
+#endif //ATVOSS_DEV_TRANSCENDENTAL_H

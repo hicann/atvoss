@@ -26,9 +26,9 @@ getdate() {
 logandprint() {
   is_error_level=$(echo $1 | grep -E 'ERROR|WARN|INFO')
   if [ "${is_quiet}" != "y" ] || [ "${is_error_level}" != "" ]; then
-    echo "[ATVOS] [$(getdate)] ""$1"
+    echo "[ATVOSS] [$(getdate)] ""$1"
   fi
-  echo "[ATVOS] [$(getdate)] ""$1" >>"${_INSTALL_LOG_FILE}"
+  echo "[ATVOSS] [$(getdate)] ""$1" >>"${_INSTALL_LOG_FILE}"
 }
 
 # create soft link
@@ -52,11 +52,11 @@ create_relatively_softlink() {
 
 create_atvos_include_softlink() {
   osName=""
-  if [ -f "$1/atvos/scene.info" ]; then
-    . $1/atvos/scene.info
+  if [ -f "$1/atvoss/scene.info" ]; then
+    . $1/atvoss/scene.info
     osName=${os}
   fi
-  atvos_include_src_path="$1/${architecture_dir}/asc/atvos/include"
+  atvos_include_src_path="$1/${architecture_dir}/asc/atvoss/include"
 
   if [ ! -d ${atvos_include_src_path} ]; then
     return 3
@@ -85,8 +85,8 @@ remove_relatively_softlink() {
 remove_atvos_include_softlink() {
   targetdir=$1
   osName=""
-  if [ -f "$targetdir/atvos/scene.info" ]; then
-    . $targetdir/atvos/scene.info
+  if [ -f "$targetdir/atvoss/scene.info" ]; then
+    . $targetdir/atvoss/scene.info
     osName=${os}
   fi
 

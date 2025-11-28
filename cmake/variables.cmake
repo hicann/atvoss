@@ -16,8 +16,8 @@ if(NOT CANN_3RD_PKG_PATH)
 endif()
 
 # src path
-get_filename_component(ACTOS_CMAKE_DIR  "${ATVOS_DIR}/cmake"    REALPATH)
-get_filename_component(ACTOS_INCLUDE    "${ATVOS_DIR}/include"  REALPATH)
+get_filename_component(ACTOS_CMAKE_DIR  "${ATVOSS_DIR}/cmake"    REALPATH)
+get_filename_component(ACTOS_INCLUDE    "${ATVOSS_DIR}/include"  REALPATH)
 
 # python
 if(NOT DEFINED ASCEND_PYTHON_EXECUTABLE)

@@ -16,43 +16,67 @@
 #include <utility>
 #include <vector>
 #include "kernel_operator.h"
-#include "atvos.h"
+#include "atvoss.h"
 #include "example_common.h"
 
-static constexpr int32_t HEIGHT = 1;
 static constexpr int32_t WIDTH = 32;
 
+template <typename T1, typename T2>
+struct CastConfig {
+    using DtypeV1 = T1;
+    using DtypeV2 = T2;
 
-template<typename T, typename U>
-struct CastOp : ATVOS::ExprTmpl::Maker {
-    using shape = AscendC::Shape<Int<HEIGHT>, Int<WIDTH>>;
-    using layout = AscendC::Std::tuple<shape>;
-    using maxSizeType = std::conditional_t<sizeof(T) >= sizeof(U),T,U>;
-    template <template <typename> class VectorType>
-    __host_aicore__ constexpr auto Get() const
-    {
-        using namespace ATVOS::ExprTmpl;
-        auto _1 = DefineParam<1, VectorType<T>, layout>();
-        auto _2 = DefineParam<2, VectorType<U>, layout, ParamUsage::out>();
-        return (_2 = Cast<ATVOS::CastMode::CAST_NONE>(_1));
-    }
+    using TileShape = ATVOSS::Shape<WIDTH>;
+    struct CastCompute {
+        template <template <typename> class Tensor>
+        __host_aicore__ constexpr auto Compute() const
+        {
+            auto in1 = ATVOSS::PlaceHolder<1, Tensor<DtypeV1>, ATVOSS::ParamUsage::in>();
+            auto out1 = ATVOSS::PlaceHolder<2, Tensor<DtypeV2>, ATVOSS::ParamUsage::out>();
+            return (out1 = Cast<ATVOSS::CastMode::CAST_NONE>(in1));
+        };
+    };
+
+    static constexpr ATVOSS::Block::BlockPolicy<TileShape> blockPolicy{
+        190 * 1024,
+        TileShape{}
+    };
+
+    static constexpr ATVOSS::Kernel::KernelPolicy kernelPolicy{
+        48, ATVOSS::Kernel::PolicySegment::UniformSegment};
+
+    using BlockOp = ATVOSS::Block::BlockBuilder<
+        CastCompute,
+        blockPolicy,
+        ATVOSS::Block::Config>;
+
+    using KernelOp = ATVOSS::Kernel::KernelBuilder<
+        BlockOp,
+        kernelPolicy>;
+
+    using DeviceOp = ATVOSS::Device::DeviceAdapter<KernelOp>;
 };
 
-static constexpr ATVOS::Kernel::PolicyEleWise kernelPolicyWidthAssign{48, 1, 0, 1, ATVOS::Kernel::PolicySegment::UniformSegment};
-static constexpr ATVOS::Block::PolicyEleWise blockPolicyWidthAssign{190 * 1024, WIDTH};
-
-using BlockOp = ATVOS::Block::BlockEleWise<CastOp<half,float>, blockPolicyWidthAssign>;
-using KernelOp = ATVOS::Kernel::KernelEleWise<BlockOp, kernelPolicyWidthAssign>;
-using DeviceOp = ATVOS::Device::DeviceAdapter<KernelOp>;
-
-int main() {
+int main()
+{
+    using Config = CastConfig<half, float>;
     std::vector<half> v1(32*32, 1.5F);
     std::vector<float> v2(32*32);
+    std::vector<float> golden(32*32, 1.5f);
+    uint32_t shape[2] = {32, 32};
 
-    std::vector<float> golden(32*32, 1.5F);
-    std::vector<uint32_t> shape{32*32};
-    DeviceOp deviceOp(shape);
-    deviceOp.Run(v1, v2);
+    ATVOSS::Tensor<half> t1(v1.data(), shape);
+    ATVOSS::Tensor<float> t2(v2.data(), shape);
+
+    // 生成入参信息
+    auto arguments = ATVOSS::ArgumentsBuilder{}
+                         .input(t1)
+                         .output(t2)
+                         .build();
+
+    Config::DeviceOp deviceOp;
+    deviceOp.Run(arguments);
+
     if (!VerifyResults(golden, v2)) {
         return -1;
     }

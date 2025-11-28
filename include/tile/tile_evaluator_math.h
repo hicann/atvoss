@@ -8,15 +8,15 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_DEV_TILE_MATH_H
-#define ATVOS_DEV_TILE_MATH_H
+#ifndef ATVOSS_DEV_TILE_MATH_H
+#define ATVOSS_DEV_TILE_MATH_H
 
 #include "tile_evaluator_common.h"
-#include "utils/tensor/tensor.h"
+#include "utils/layout/layout.h"
 
-namespace ATVOS::Tile::Eval {
+namespace ATVOSS::Tile::Eval {
 
-using OperationShape = ATVOS::Tensor::OperationShape;
+using OperationShape = ATVOSS::Layout::OperationShape;
 
 /*!
  * \brief Add calculation based on the expression
@@ -282,4 +282,4 @@ struct Evaluator<OpAssign<T, OpCast<castMode, U>>> {
 };
 
 }
-#endif //ATVOS_DEV_TILE_MATH_H
+#endif //ATVOSS_DEV_TILE_MATH_H

@@ -36,7 +36,7 @@ endif()
 # 生成安装配置文件
 set(CSV_OUTPUT ${CPACK_CMAKE_BINARY_DIR}/filelist.csv)
 execute_process(
-  COMMAND python3 ${CPACK_CMAKE_SOURCE_DIR}/scripts/package/package.py --pkg_name atvos --os_arch linux-${CPACK_ARCH}
+  COMMAND python3 ${CPACK_CMAKE_SOURCE_DIR}/scripts/package/package.py --pkg_name atvoss --os_arch linux-${CPACK_ARCH}
   WORKING_DIRECTORY ${CPACK_CMAKE_BINARY_DIR}
   OUTPUT_VARIABLE result
   ERROR_VARIABLE error
@@ -57,23 +57,23 @@ endif ()
 set(SCENE_OUT_PUT
   ${CPACK_CMAKE_BINARY_DIR}/scene.info
 )
-set(ATVOS_VERSION_OUT_PUT
-  ${CPACK_CMAKE_BINARY_DIR}/atvos_version.h
+set(ATVOSS_VERSION_OUT_PUT
+  ${CPACK_CMAKE_BINARY_DIR}/atvoss_version.h
 )
 
 configure_file(
   ${SCENE_OUT_PUT}
-  ${STAGING_DIR}/atvos/
+  ${STAGING_DIR}/atvoss/
   COPYONLY
 )
 configure_file(
   ${CSV_OUTPUT}
-  ${STAGING_DIR}/atvos/script
+  ${STAGING_DIR}/atvoss/script
   COPYONLY
 )
 configure_file(
-  ${ATVOS_VERSION_OUT_PUT}
-  ${STAGING_DIR}/atvos/
+  ${ATVOSS_VERSION_OUT_PUT}
+  ${STAGING_DIR}/atvoss/
   COPYONLY
 )
 # makeself打包
@@ -87,8 +87,8 @@ message(STATUS "package: ${package_name}")
 
 execute_process(COMMAND bash ${MAKESELF_EXE}
   --header ${MAKESELF_HEADER_EXE}
-  --help-header atvos/script/help.info
-  ${makeself_param_string} atvos/script/install.sh
+  --help-header atvoss/script/help.info
+  ${makeself_param_string} atvoss/script/install.sh
   WORKING_DIRECTORY ${STAGING_DIR}
   RESULT_VARIABLE EXEC_RESULT
   ERROR_VARIABLE  EXEC_ERROR

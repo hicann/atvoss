@@ -7,36 +7,36 @@
        INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
        See LICENSE in the root of the software repository for the full text of the License.
 -->
-<config name="atvos" copy_type="delivery" src_path="" dst_path="atvos" install_type="all" install_mod="550" install_own="$username:$usergroup">
+<config name="atvoss" copy_type="delivery" src_path="" dst_path="atvoss" install_type="all" install_mod="550" install_own="$username:$usergroup">
     <package_info>
         <product_name>cann</product_name>
-        <func_name>atvos</func_name>
+        <func_name>atvoss</func_name>
         <suffix>run</suffix>
-        <install_script>atvos/script/install.sh</install_script>
-        <help>atvos/script/help.info</help>
-        <cleanup>atvos/script/cleanup.sh</cleanup>
+        <install_script>atvoss/script/install.sh</install_script>
+        <help>atvoss/script/help.info</help>
+        <cleanup>atvoss/script/cleanup.sh</cleanup>
         <parallel>true</parallel>
         <check_features>true</check_features>
     </package_info>
 
-    <generate_info value="atvos_version.h" dst_path="atvos" install_path="$(TARGET_ENV)/include/version" install_mod="440" install_type="devel" generator="version_header">
-       <ATVOS_VERSION>$(VERSION_DIR)</ATVOS_VERSION>
-       <ATVOS_TIMESTAMP>$(TIMESTAMP_NO)</ATVOS_TIMESTAMP>
+    <generate_info value="atvoss_version.h" dst_path="atvoss" install_path="$(TARGET_ENV)/include/version" install_mod="440" install_type="devel" generator="version_header">
+       <ATVOSS_VERSION>$(VERSION_DIR)</ATVOSS_VERSION>
+       <ATVOSS_TIMESTAMP>$(TIMESTAMP_NO)</ATVOSS_TIMESTAMP>
     </generate_info>
 
-    <generate_info value="scene.info" dst_path="atvos" install_path="atvos" install_mod="640">
+    <generate_info value="scene.info" dst_path="atvoss" install_path="atvoss" install_mod="640">
         <os>$(OS_NAME)</os>
         <os_version>$(OS_VER)</os_version>
         <arch>$(ARCH)</arch>
     </generate_info>
 
-    <file_info value="atvos_script" copy_type="source" src_path="" dst_path="atvos" install_path="atvos">
+    <file_info value="atvos_script" copy_type="source" src_path="" dst_path="atvoss" install_path="atvoss">
         <file value="script" entity="true"/>
         <file value="bin" entity="true"/>
         <file value="version.info" dst_path="."/>
     </file_info>
 
-    <block_info dependtree="false" dst_path="atvos" block_conf_path="ascend">
+    <block_info dependtree="false" dst_path="atvoss" block_conf_path="ascend">
         <block name="EngineeringCommon"/>
         <block name="EngineeringFiles"/>
     </block_info>
@@ -45,11 +45,11 @@
         <path value="$(TARGET_ENV)/ascendc"/>
         <path value="$(TARGET_ENV)/ascendc/act"/>
         <path value="$(TARGET_ENV)/asc"/>
-        <path value="$(TARGET_ENV)/asc/atvos"/>
-        <path value="$(TARGET_ENV)/asc/atvos/include"/>
+        <path value="$(TARGET_ENV)/asc/atvoss"/>
+        <path value="$(TARGET_ENV)/asc/atvoss/include"/>
     </dir_info>
 
-    <file_info value="atvos_include" copy_type="delivery" src_path="" dst_path="atvos" install_path="$(TARGET_ENV)/asc/atvos" install_type="all">
+    <file_info value="atvos_include" copy_type="delivery" src_path="" dst_path="atvoss" install_path="$(TARGET_ENV)/asc/atvoss" install_type="all">
         <file value="include" install_mod="550" entity="true" install_softlink="$(TARGET_ENV)/ascendc/act/include"/>
     </file_info>
 </config>

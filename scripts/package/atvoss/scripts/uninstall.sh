@@ -24,9 +24,9 @@ getdate() {
 logandprint() {
     is_error_level=$(echo $1 | grep -E 'ERROR|WARN|INFO')
     if [ "${is_quiet}" != "y" ] || [ "${is_error_level}" != "" ]; then
-        echo "[ATVOS] [$(getdate)] ""$1"
+        echo "[ATVOSS] [$(getdate)] ""$1"
     fi
-    echo "[ATVOS] [$(getdate)] ""$1" >> "${_INSTALL_LOG_FILE}"
+    echo "[ATVOSS] [$(getdate)] ""$1" >> "${_INSTALL_LOG_FILE}"
 }
 
 if [ "$(id -u)" != "0" ]; then
@@ -54,7 +54,7 @@ install_shell="${_CURR_PATH}/install.sh"
 
 # shell exist check
 if [ ! -f "${install_shell}" ]; then
-    logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST};atvos is not installed or some atvos source files are lost.\
+    logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST};atvoss is not installed or some atvoss source files are lost.\
 If there are any residual files, please manually remove those files."
     exit 1
 fi

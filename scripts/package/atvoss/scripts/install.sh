@@ -17,8 +17,8 @@ FILE_NOT_EXIST_DES="File not found."
 PERM_DENIED="0x0093"
 PERM_DENIED_DES="Permission denied."
 
-ATVOS_PLATFORM_DIR=atvos
-ATVOS_PLATFORM_UPPER=$(echo "${ATVOS_PLATFORM_DIR}" | tr '[:lower:]' '[:upper:]')
+ATVOSS_PLATFORM_DIR=atvoss
+ATVOSS_PLATFORM_UPPER=$(echo "${ATVOSS_PLATFORM_DIR}" | tr '[:lower:]' '[:upper:]')
 CURR_OPERATE_USER="$(id -nu 2>/dev/null)"
 CURR_OPERATE_GROUP="$(id -ng 2>/dev/null)"
 # defaults for general user
@@ -31,7 +31,7 @@ fi
 
 # run package's files info, CURR_PATH means current temp path
 CURR_PATH=$(dirname $(readlink -f $0))
-INSTALL_SHELL_FILE="${CURR_PATH}/atvos_install.sh"
+INSTALL_SHELL_FILE="${CURR_PATH}/atvoss_install.sh"
 RUN_PKG_INFO_FILE="${CURR_PATH}/../scene.info"
 VERSION_INFO_FILE="${CURR_PATH}/../../version.info"
 COMMON_INC_FILE="${CURR_PATH}/common_func.inc"
@@ -40,13 +40,13 @@ PRE_CHECK_FILE="${CURR_PATH}/../bin/prereq_check.bash"
 VERSION_COMPAT_FUNC_PATH="${CURR_PATH}/version_compatiable.inc"
 COMMON_FUNC_V2_PATH="${CURR_PATH}/common_func_v2.inc"
 VERSION_CFG_PATH="${CURR_PATH}/version_cfg.inc"
-ATVOS_COMMON_FILE="${CURR_PATH}/atvos_common.sh"
+ATVOSS_COMMON_FILE="${CURR_PATH}/atvoss_common.sh"
 
 . "${VERSION_COMPAT_FUNC_PATH}"
 . "${COMMON_INC_FILE}"
 . "${COMMON_FUNC_V2_PATH}"
 . "${VERSION_CFG_PATH}"
-. "${ATVOS_COMMON_FILE}"
+. "${ATVOSS_COMMON_FILE}"
 
 ARCH_INFO=$(grep -e "arch" "$RUN_PKG_INFO_FILE" | cut --only-delimited -d"=" -f2-)
 
@@ -55,17 +55,17 @@ ASCEND_INSTALL_INFO="ascend_install.info"
 TARGET_INSTALL_PATH="${DEFAULT_INSTALL_PATH}" #--input-path
 TARGET_USERNAME="${CURR_OPERATE_USER}"
 TARGET_USERGROUP="${CURR_OPERATE_GROUP}"
-TARGET_MOULDE_DIR=""  # TARGET_INSTALL_PATH + PKG_VERSION_DIR + ATVOS_PLATFORM_DIR
+TARGET_MOULDE_DIR=""  # TARGET_INSTALL_PATH + PKG_VERSION_DIR + ATVOSS_PLATFORM_DIR
 TARGET_VERSION_DIR="" # TARGET_INSTALL_PATH + PKG_VERSION_DIR
 
 # keys of infos in ascend_install.info
 KEY_INSTALLED_UNAME="USERNAME"
 KEY_INSTALLED_UGROUP="USERGROUP"
-KEY_INSTALLED_TYPE="${ATVOS_PLATFORM_UPPER}_INSTALL_TYPE"
-KEY_INSTALLED_PATH="${ATVOS_PLATFORM_UPPER}_INSTALL_PATH_VAL"
-KEY_INSTALLED_VERSION="${ATVOS_PLATFORM_UPPER}_VERSION"
-KEY_INSTALLED_FEATURE="${ATVOS_PLATFORM_UPPER}_INSTALL_FEATURE"
-KEY_INSTALLED_CHIP="${ATVOS_PLATFORM_UPPER}_INSTALL_CHIP"
+KEY_INSTALLED_TYPE="${ATVOSS_PLATFORM_UPPER}_INSTALL_TYPE"
+KEY_INSTALLED_PATH="${ATVOSS_PLATFORM_UPPER}_INSTALL_PATH_VAL"
+KEY_INSTALLED_VERSION="${ATVOSS_PLATFORM_UPPER}_VERSION"
+KEY_INSTALLED_FEATURE="${ATVOSS_PLATFORM_UPPER}_INSTALL_FEATURE"
+KEY_INSTALLED_CHIP="${ATVOSS_PLATFORM_UPPER}_INSTALL_CHIP"
 
 # keys of infos in run package
 KEY_RUNPKG_VERSION="Version"
@@ -91,11 +91,11 @@ IN_FEATURE="All"
 # log functions
 # start info before shell executing
 startlog() {
-  echo "[ATVOS] [$(getdate)] [INFO]: Start Time: $(getdate)"
+  echo "[ATVOSS] [$(getdate)] [INFO]: Start Time: $(getdate)"
 }
 
 exitlog() {
-  echo "[ATVOS] [$(getdate)] [INFO]: End Time: $(getdate)"
+  echo "[ATVOSS] [$(getdate)] [INFO]: End Time: $(getdate)"
 }
 
 #check ascend_install.info for the change in code warning
@@ -113,25 +113,25 @@ clean_before_reinstall() {
   local installed_path=$(get_installed_info "${KEY_INSTALLED_PATH}")
   local existed_files=$(find ${TARGET_MOULDE_DIR} -type f -print 2>/dev/null)
   if [ -z "${existed_files}" ]; then
-    logandprint "[INFO]: Directory is empty, directly install atvos."
+    logandprint "[INFO]: Directory is empty, directly install atvoss."
     return 0
   fi
 
   if [ "${IS_QUIET}" = "y" ]; then
-    logandprint "[WARNING]: Directory has file existed or installed atvos,\
- are you sure to keep installing atvos in it? y"
+    logandprint "[WARNING]: Directory has file existed or installed atvoss,\
+ are you sure to keep installing atvoss in it? y"
   else
     if [ ! -f "${TARGET_MOULDE_DIR}/ascend_install.info" ]; then
       logandprint "[INFO]: Directory has file existed, do you want to continue? [y/n]"
     else
-      logandprint "[INFO]: atvos package has been installed on the path $(get_installed_info "${KEY_INSTALLED_PATH}"),\
+      logandprint "[INFO]: atvoss package has been installed on the path $(get_installed_info "${KEY_INSTALLED_PATH}"),\
  the version is $(get_installed_info "${KEY_INSTALLED_VERSION}"),\
  and the version of this package is ${RUN_PKG_VERSION}, do you want to continue? [y/n]"
     fi
     while true; do
       read yn
       if [ "$yn" = "n" ]; then
-        logandprint "[INFO]: Exit to install atvos."
+        logandprint "[INFO]: Exit to install atvoss."
         exitlog
         exit 0
       elif [ "$yn" = "y" ]; then
@@ -143,11 +143,11 @@ clean_before_reinstall() {
   fi
 
   if [ "${installed_path}" = "${TARGET_VERSION_DIR}" ]; then
-    logandprint "[INFO]: Clean the installed atvos before install."
+    logandprint "[INFO]: Clean the installed atvoss before install."
     if [ ! -f "${UNINSTALL_SHELL_FILE}" ]; then
       logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST};ERR_DES:${FILE_NOT_EXIST_DES}.The file\
  (${UNINSTALL_SHELL_FILE}) not exists. Please set the correct install \
- path or clean the previous version atvos install info (${INSTALL_INFO_FILE}) and then reinstall it."
+ path or clean the previous version atvoss install info (${INSTALL_INFO_FILE}) and then reinstall it."
       return 1
     fi
     bash "${UNINSTALL_SHELL_FILE}" "${TARGET_VERSION_DIR}" "upgrade" "${IS_QUIET}" ${IN_FEATURE} "${IS_DOCKER_INSTALL}" "${DOCKER_ROOT}"
@@ -199,10 +199,10 @@ check_version_file() {
 check_atvos_version_info() {
   if [ -f "${CURR_PATH}/../../version.info" ]; then
     atvos_ver_info="${CURR_PATH}/../../version.info"
-  elif [ -f "${DEFAULT_INSTALL_PATH}/${ATVOS_PLATFORM_DIR}/version.info" ]; then
-    atvos_ver_info="${DEFAULT_INSTALL_PATH}/${ATVOS_PLATFORM_DIR}/version.info"
+  elif [ -f "${DEFAULT_INSTALL_PATH}/${ATVOSS_PLATFORM_DIR}/version.info" ]; then
+    atvos_ver_info="${DEFAULT_INSTALL_PATH}/${ATVOSS_PLATFORM_DIR}/version.info"
   else
-    logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST}; The [${ATVOS_PLATFORM_DIR}] version.info not exists."
+    logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST}; The [${ATVOSS_PLATFORM_DIR}] version.info not exists."
     exitlog
     exit 1
   fi
@@ -230,9 +230,9 @@ show_relation() {
   req_pkg_name_val="$2"
   req_pkg_path="$3"
   if [ "$relation_situation" = "SUCC" ]; then
-    logandprint "[INFO]: Relationship of atvos with ${req_pkg_name_val} in path ${req_pkg_path} checked successfully"
+    logandprint "[INFO]: Relationship of atvoss with ${req_pkg_name_val} in path ${req_pkg_path} checked successfully"
   else
-    logandprint "[WARNING]: Relationship of atvos with ${req_pkg_name_val} in path ${req_pkg_path} checked failed."
+    logandprint "[WARNING]: Relationship of atvoss with ${req_pkg_name_val} in path ${req_pkg_path} checked failed."
   fi
   return
 }
@@ -299,13 +299,13 @@ path_version_check() {
 check_docker_path() {
   docker_path="$1"
   if [ "${docker_path}" != "/"* ]; then
-    echo "[ATVOS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Parameter --docker-root\
+    echo "[ATVOSS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Parameter --docker-root\
  must with absolute path that which is start with root directory /. Such as --docker-root=/${docker_path}"
     exitlog
     exit 1
   fi
   if [ ! -d "${docker_path}" ]; then
-    echo "[ATVOS] [ERROR]: ERR_NO:${FILE_NOT_EXIST}; The directory:${docker_path} not exist, please create this directory."
+    echo "[ATVOSS] [ERROR]: ERR_NO:${FILE_NOT_EXIST}; The directory:${docker_path} not exist, please create this directory."
     exitlog
     exit 1
   fi
@@ -315,7 +315,7 @@ judgment_path() {
   . "${COMMON_INC_FILE}"
   check_install_path_valid "${1}"
   if [ $? -ne 0 ]; then
-    echo "[ATVOS][ERROR]: The atvos install path ${1} is invalid, only characters in [a-z,A-Z,0-9,-,_] are supported!"
+    echo "[ATVOSS][ERROR]: The atvoss install path ${1} is invalid, only characters in [a-z,A-Z,0-9,-,_] are supported!"
     exitlog
     exit 1
   fi
@@ -325,14 +325,14 @@ check_install_path() {
   TARGET_INSTALL_PATH="$1"
   # empty patch check
   if [ "x${TARGET_INSTALL_PATH}" = "x" ]; then
-    echo "[ATVOS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Parameter --install-path\
+    echo "[ATVOSS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Parameter --install-path\
  not support that the install path is empty."
     exitlog
     exit 1
   fi
   # space check
   if echo "x${TARGET_INSTALL_PATH}" | grep -q " "; then
-    echo "[ATVOS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Parameter --install-path\
+    echo "[ATVOSS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Parameter --install-path\
  not support that the install path contains space character."
     exitlog
     exit 1
@@ -352,7 +352,7 @@ check_install_path() {
     if [ x"${prefix}" = "x" ]; then
       TARGET_INSTALL_PATH="${RUN_PATH}/${temp_path}"
     else
-      echo "[ATVOS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES: Run package path is invalid: $RUN_PATH"
+      echo "[ATVOSS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES: Run package path is invalid: $RUN_PATH"
       exitlog
       exit 1
     fi
@@ -381,13 +381,13 @@ interact_pre_check() {
   exec_pre_check
   if [ "$?" != 0 ]; then
     if [ "${IS_QUIET}" = y ]; then
-      logandprint "[WARNING]: Precheck of atvos execute failed! do you want to continue install? y"
+      logandprint "[WARNING]: Precheck of atvoss execute failed! do you want to continue install? y"
     else
-      logandprint "[WARNING]: Precheck of atvos execute failed! do you want to continue install?  [y/n] "
+      logandprint "[WARNING]: Precheck of atvoss execute failed! do you want to continue install?  [y/n] "
       while true; do
         read yn
         if [ "$yn" = "n" ]; then
-          echo "stop install atvos!"
+          echo "stop install atvoss!"
           exit 1
         elif [ "$yn" = y ]; then
           break
@@ -400,7 +400,7 @@ interact_pre_check() {
 }
 
 #get the dir of xxx.run
-#atvos_install_path_curr=`echo "$2" | cut -d"/" -f2- `
+#atvoss_install_path_curr=`echo "$2" | cut -d"/" -f2- `
 # cut first two params from *.run
 get_run_path() {
   RUN_PATH=$(echo "$2" | cut -d"-" -f3-)
@@ -485,7 +485,7 @@ get_opts() {
         shift
         ;;
       -*)
-        echo "[ATVOS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Unsupported parameters [$1],\
+        echo "[ATVOSS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:Unsupported parameters [$1],\
  operation execute failed. Please use [--help] to see the useage."
         exitlog
         exit 1
@@ -506,7 +506,7 @@ check_opts() {
   fi
 
   if [ "${CONFLICT_CMD_NUMS}" != 1 ]; then
-    echo "[ATVOS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:\
+    echo "[ATVOSS] [ERROR]: ERR_NO:${PARAM_INVALID};ERR_DES:\
  only support one type: full/run/devel/upgrade/uninstall/check, operation execute failed!\
  Please use [--help] to see the usage."
     exitlog
@@ -516,7 +516,7 @@ check_opts() {
 
 # init target_dir and log for install
 init_env() {
-  get_install_package_dir "TARGET_MOULDE_DIR" "${VERSION_INFO_FILE}" "${TARGET_INSTALL_PATH}" "${ATVOS_PLATFORM_DIR}"
+  get_install_package_dir "TARGET_MOULDE_DIR" "${VERSION_INFO_FILE}" "${TARGET_INSTALL_PATH}" "${ATVOSS_PLATFORM_DIR}"
   TARGET_VERSION_DIR=$(dirname ${TARGET_MOULDE_DIR})
   # Splicing docker-root and install-path
   if [ "${IS_DOCKER_INSTALL}" = "y" ]; then
@@ -529,7 +529,7 @@ init_env() {
     TARGET_VERSION_DIR=${temp_path_val}${TARGET_VERSION_DIR}
   fi
 
-  UNINSTALL_SHELL_FILE="${TARGET_MOULDE_DIR}/script/atvos_uninstall.sh"
+  UNINSTALL_SHELL_FILE="${TARGET_MOULDE_DIR}/script/atvoss_uninstall.sh"
   INSTALL_INFO_FILE="${TARGET_MOULDE_DIR}/${ASCEND_INSTALL_INFO}"
   is_multi_version_pkg "pkg_is_multi_version" "$VERSION_INFO_FILE"
   get_version_dir "PKG_VERSION_DIR" "$VERSION_INFO_FILE"
@@ -538,17 +538,17 @@ init_env() {
   # creat log folder and log file
   comm_init_log
 
-  logandprint "[INFO]: Execute the atvos run package."
+  logandprint "[INFO]: Execute the atvoss run package."
   logandprint "[INFO]: OperationLogFile path: ${COMM_LOGFILE}."
   logandprint "[INFO]: Input params: $CMD_LIST"
 
   local installed_version=$(get_installed_info "${KEY_INSTALLED_VERSION}")
   if [ "${installed_version}" = "" ]; then
-    logandprint "[INFO]: Version of installing atvos is ${RUN_PKG_VERSION}."
+    logandprint "[INFO]: Version of installing atvoss is ${RUN_PKG_VERSION}."
   else
     if [ "${RUN_PKG_VERSION}" != "" ]; then
-      logandprint "[INFO]: Existed atvos version is ${installed_version},\
- the new atvos version is ${RUN_PKG_VERSION}."
+      logandprint "[INFO]: Existed atvoss version is ${installed_version},\
+ the new atvoss version is ${RUN_PKG_VERSION}."
     fi
   fi
 }
@@ -571,7 +571,7 @@ check_pre_install() {
     if [ ! -f "${VERCHECK_FILE}" ]; then
       logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST};ERR_DES:${FILE_NOT_EXIST_DES}.\
       The file (${VERCHECK_FILE}) not exists.\
- Please make sure that the atvos installed in (${VERCHECK_FILE}) and then set the correct install path."
+ Please make sure that the atvoss installed in (${VERCHECK_FILE}) and then set the correct install path."
     fi
     bash "${VERCHECK_FILE}" "${check_path}"
     exitlog
@@ -624,7 +624,7 @@ install_package() {
   if [ "${IS_INSTALL}" = "n" ] && [ "${IS_UPGRADE}" = "n" ]; then
     return
   fi
-  # precheck before install atvos module
+  # precheck before install atvoss module
   if [ "${IS_PRE_CHECK}" = "y" ]; then
     interact_pre_check
   fi
@@ -632,13 +632,13 @@ install_package() {
   # use uninstall to clean the install folder
   clean_before_reinstall
   if [ "$?" != 0 ]; then
-    comm_log_operation "Install" "${IN_INSTALL_TYPE}" "ATVOS" "$?" "${CMD_LIST}"
+    comm_log_operation "Install" "${IN_INSTALL_TYPE}" "ATVOSS" "$?" "${CMD_LIST}"
   fi
 
   bash "${INSTALL_SHELL_FILE}" "${TARGET_INSTALL_PATH}" "${TARGET_USERNAME}" "${TARGET_USERGROUP}" "${IN_FEATURE}" \
     "${IN_INSTALL_TYPE}" "${IS_FOR_ALL}" "${IS_SETENV}" "${IS_DOCKER_INSTALL}" "${DOCKER_ROOT}"
   if [ "$?" != 0 ]; then
-    comm_log_operation "Install" "${IN_INSTALL_TYPE}" "ATVOS" "$?" "${CMD_LIST}"
+    comm_log_operation "Install" "${IN_INSTALL_TYPE}" "ATVOSS" "$?" "${CMD_LIST}"
   fi
   if [ $(id -u) -eq 0 ]; then
     chown -R "root":"root" "${TARGET_MOULDE_DIR}/script" 2>/dev/null
@@ -647,7 +647,7 @@ install_package() {
     chmod -R 550 "${TARGET_MOULDE_DIR}/script" 2>/dev/null
     chmod 440 "${TARGET_MOULDE_DIR}/script/filelist.csv" 2>/dev/null
   fi
-  comm_log_operation "Install" "${IN_INSTALL_TYPE}" "ATVOS" "$?" "${CMD_LIST}"
+  comm_log_operation "Install" "${IN_INSTALL_TYPE}" "ATVOSS" "$?" "${CMD_LIST}"
 }
 
 uninstall_package() {
@@ -657,20 +657,20 @@ uninstall_package() {
 
   if [ ! -f "${UNINSTALL_SHELL_FILE}" ]; then
     logandprint "[ERROR]: ERR_NO:${FILE_NOT_EXIST};ERR_DES:The file\
- (${UNINSTALL_SHELL_FILE}) not exists. Please make sure that the atvos module\
+ (${UNINSTALL_SHELL_FILE}) not exists. Please make sure that the atvoss module\
  installed in (${TARGET_VERSION_DIR}) and then set the correct install path."
     uninstall_path=$(ls "${TARGET_INSTALL_PATH}" 2>/dev/null)
     if [ "${uninstall_path}" = "" ]; then
       rm -rf "${TARGET_INSTALL_PATH}"
     fi
-    comm_log_operation "Uninstall" "${IN_INSTALL_TYPE}" "ATVOS" "$?" "${CMD_LIST}"
+    comm_log_operation "Uninstall" "${IN_INSTALL_TYPE}" "ATVOSS" "$?" "${CMD_LIST}"
     exit 0
   fi
   bash "${UNINSTALL_SHELL_FILE}" "${TARGET_INSTALL_PATH}" "uninstall" "${IS_QUIET}" ${IN_FEATURE} "${IS_DOCKER_INSTALL}" "${DOCKER_ROOT}"
   # remove precheck info in ${TARGET_VERSION_DIR}/bin/prereq_check.bash
   logandprint "[INFO]: Remove precheck info."
 
-  comm_log_operation "Uninstall" "${IN_INSTALL_TYPE}" "ATVOS" "$?" "${CMD_LIST}"
+  comm_log_operation "Uninstall" "${IN_INSTALL_TYPE}" "ATVOSS" "$?" "${CMD_LIST}"
 }
 
 pre_check_only() {

@@ -19,8 +19,8 @@ set(PRODUCT_TYPE_LIST ascend910b
 
 add_compile_definitions(__CCE_KT_TEST__=1 ASCENDC_CPU_DEBUG=1 ASCENDC_DUMP=0)
 
-include(${ATVOS_DIR}/cmake/intf_pub_llt.cmake)
-include(${ATVOS_DIR}/cmake/third_party/gtest.cmake)
+include(${ATVOSS_DIR}/cmake/intf_pub_llt.cmake)
+include(${ATVOSS_DIR}/cmake/third_party/gtest.cmake)
 
 set(ASCENDC_SYS_DIR ${ASCEND_DIR}/${CMAKE_SYSTEM_PROCESSOR}-linux)
 
@@ -37,12 +37,12 @@ set(ASCEND_DEP_LIB_DIR
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(ATVOS_TEST_HEADER_FILES
+set(ATVOSS_TEST_HEADER_FILES
     ${UT_PATH}/common
-    ${ATVOS_DIR}
+    ${ATVOSS_DIR}
     ${GTEST_INCLUDE}
     ${C_SEC_INCLUDE}
-    ${ATVOS_DIR}/include
+    ${ATVOSS_DIR}/include
     ${ASCENDC_SYS_DIR}/tikcpp/tikcfw
     ${ASCENDC_SYS_DIR}/tikcpp/tikcfw/interface
     ${ASCENDC_SYS_DIR}/tikcpp/tikcfw/impl
@@ -51,20 +51,20 @@ set(ATVOS_TEST_HEADER_FILES
     ${ASCEND_DIR}/tools/tikicpulib/lib/include
 )
 
-set(ATVOS_TEST_ascend910b_HEADER_FILES
-    ${ATVOS_DIR}
+set(ATVOSS_TEST_ascend910b_HEADER_FILES
+    ${ATVOSS_DIR}
 )
 
 
-set(ATVOS_TEST_ascend910b_PARAM_CASE_SRC_FILES
+set(ATVOSS_TEST_ascend910b_PARAM_CASE_SRC_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/param/test_atvos_param.cpp
 )
-# 仅针对ATVOS产品类型构建和运行测试
+# 仅针对ATVOSS产品类型构建和运行测试
 foreach(product_type ${PRODUCT_TYPE_LIST})
     add_executable(atvos_${product_type}_ut
 	    ${UT_PATH}/main_global.cpp
 	    $<$<STREQUAL:${product_type},ascend910b>:${UT_PATH}/common/platform_stub.cpp>
-      ${ATVOS_TEST_${product_type}_PARAM_CASE_SRC_FILES}
+      ${ATVOSS_TEST_${product_type}_PARAM_CASE_SRC_FILES}
     )
 
     # add soc version flags
@@ -90,9 +90,9 @@ foreach(product_type ${PRODUCT_TYPE_LIST})
     )
 
     target_include_directories(atvos_${product_type}_ut PRIVATE
-        ${ATVOS_TEST_HEADER_FILES}
+        ${ATVOSS_TEST_HEADER_FILES}
         ${ASCENDC_DEP_HEADER_DIR}
-        ${ATVOS_TEST_${product_type}_HEADER_FILES}
+        ${ATVOSS_TEST_${product_type}_HEADER_FILES}
     )
 
     target_compile_options(atvos_${product_type}_ut PRIVATE

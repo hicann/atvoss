@@ -19,20 +19,20 @@ FILE_READ_FAILED_DES="File read failed."
 
 CURR_PATH=$(dirname $(readlink -f $0))
 COMMON_INC_FILE="${CURR_PATH}/common_func.inc"
-ATVOS_COMMON_FILE="${CURR_PATH}/atvos_common.sh"
+ATVOSS_COMMON_FILE="${CURR_PATH}/atvoss_common.sh"
 
 . "${COMMON_INC_FILE}"
-. "${ATVOS_COMMON_FILE}"
+. "${ATVOSS_COMMON_FILE}"
 
 ARCH_INFO=$(uname -m)
-ATVOS_PLATFORM_DIR=atvos
-ATVOS_PLATFORM_UPPER=$(echo "${ATVOS_PLATFORM_DIR}" | tr '[:lower:]' '[:upper:]')
+ATVOSS_PLATFORM_DIR=atvoss
+ATVOSS_PLATFORM_UPPER=$(echo "${ATVOSS_PLATFORM_DIR}" | tr '[:lower:]' '[:upper:]')
 FILELIST_FILE="${CURR_PATH}/filelist.csv"
 COMMON_PARSER_FILE="${CURR_PATH}/install_common_parser.sh"
 TARGET_INSTALL_PATH=""
 TARGET_VERSION_DIR="${CURR_PATH}/../.."
 TARGET_VERSION_DIR=$(readlink -f ${TARGET_VERSION_DIR})     # TARGET_INSTALL_PATH + PKG_VERSION_DIR
-TARGET_MOULDE_DIR=${TARGET_VERSION_DIR}/${ATVOS_PLATFORM_DIR} # TARGET_INSTALL_PATH + PKG_VERSION_DIR + ATVOS_PLATFORM_DIR
+TARGET_MOULDE_DIR=${TARGET_VERSION_DIR}/${ATVOSS_PLATFORM_DIR} # TARGET_INSTALL_PATH + PKG_VERSION_DIR + ATVOSS_PLATFORM_DIR
 ASCEND_INSTALL_INFO="ascend_install.info"
 # init log file path
 INSTALL_INFO_FILE="${TARGET_MOULDE_DIR}/${ASCEND_INSTALL_INFO}"
@@ -42,10 +42,10 @@ VERSION_INFO_FILE="${TARGET_MOULDE_DIR}/version.info"
 # keys of infos in ascend_install.info
 KEY_INSTALLED_UNAME="USERNAME"
 KEY_INSTALLED_UGROUP="USERGROUP"
-KEY_INSTALLED_TYPE="${ATVOS_PLATFORM_UPPER}_INSTALL_TYPE"
-KEY_INSTALLED_FEATURE="${ATVOS_PLATFORM_UPPER}_INSTALL_FEATURE"
-KEY_INSTALLED_PATH="${ATVOS_PLATFORM_UPPER}_INSTALL_PATH_VAL"
-KEY_INSTALLED_VERSION="${ATVOS_PLATFORM_UPPER}_VERSION"
+KEY_INSTALLED_TYPE="${ATVOSS_PLATFORM_UPPER}_INSTALL_TYPE"
+KEY_INSTALLED_FEATURE="${ATVOSS_PLATFORM_UPPER}_INSTALL_FEATURE"
+KEY_INSTALLED_PATH="${ATVOSS_PLATFORM_UPPER}_INSTALL_PATH_VAL"
+KEY_INSTALLED_VERSION="${ATVOSS_PLATFORM_UPPER}_VERSION"
 
 get_opts() {
   INSTALLED_PATH="$1"
@@ -127,7 +127,7 @@ check_installed_type() {
     [ "${type}" != "full" ] &&
     [ "${type}" != "upgrade" ] &&
     [ "${type}" != "devel" ]; then
-    logandprint "[ERROR]: ERR_NO:${UNAME_NOT_EXIST};ERR_DES:Install type of atvos is not right!"
+    logandprint "[ERROR]: ERR_NO:${UNAME_NOT_EXIST};ERR_DES:Install type of atvoss is not right!"
     exit 1
   fi
 }
@@ -164,13 +164,13 @@ remove_module() {
   done
   chmod u+w ${TARGET_MOULDE_DIR}/scene.info
 
-  logandprint "[INFO]: Delete the installed atvos source files in (${TARGET_VERSION_DIR})."
+  logandprint "[INFO]: Delete the installed atvoss source files in (${TARGET_VERSION_DIR})."
 
-  bash "${COMMON_PARSER_FILE}" --package="${ATVOS_PLATFORM_DIR}" --uninstall --recreate-softlink \
+  bash "${COMMON_PARSER_FILE}" --package="${ATVOSS_PLATFORM_DIR}" --uninstall --recreate-softlink \
     --username="${TARGET_USERNAME}" --usergroup="${TARGET_USERGROUP}" --version=$RUN_PKG_VERSION \
     --version-dir=$PKG_VERSION_DIR ${UNINSTALL_OPTION} "${INSTALLED_TYPE}" "${TARGET_INSTALL_PATH}" \
     "${FILELIST_FILE}" "${IN_FEATURE}" --recreate-softlink
-  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${OPERATE_FAILED};ERR_DES:Uninstall atvos failed."
+  log_with_errorlevel "$?" "error" "[ERROR]: ERR_NO:${OPERATE_FAILED};ERR_DES:Uninstall atvoss failed."
 
   # remove empty dir, even though has softlink
   local remain_dir_list=$(find ${TARGET_MOULDE_DIR} -mindepth 1 -maxdepth 1 -type d)
@@ -192,7 +192,7 @@ remove_atvos() {
   if [ "${UNINSTALL_MODE}" != "upgrade" ]; then
     logandprint "[INFO]: Delete the install info file (${INSTALL_INFO_FILE})."
     rm -f "${INSTALL_INFO_FILE}"
-    log_with_errorlevel "$?" "warn" "[WARNING] Delete atvos install info file failed, please delete it by yourself."
+    log_with_errorlevel "$?" "warn" "[WARNING] Delete atvoss install info file failed, please delete it by yourself."
   fi
 
   for file in $(ls -A ${TARGET_MOULDE_DIR}/* 2>/dev/null); do
@@ -210,10 +210,10 @@ remote_all_soft_link() {
 #   fi
 #   [ -d ${arch_include_dir}/aclnn_kernels ] && rm -rf "${arch_include_dir}/aclnn_kernels"
   # remove all softlink
-  find ${TARGET_INSTALL_PATH}/latest/ -type l -lname "*/${ATVOS_PLATFORM_DIR}/*" -delete
+  find ${TARGET_INSTALL_PATH}/latest/ -type l -lname "*/${ATVOSS_PLATFORM_DIR}/*" -delete
 }
 
-logandprint "[INFO]: Begin uninstall the atvos."
+logandprint "[INFO]: Begin uninstall the atvoss."
 
 main() {
   get_opts "$@"
@@ -237,7 +237,7 @@ main() {
   fi
   remove_dir_if_empty ${INSTALLED_PATH}
 
-  logandprint "[INFO]: atvos package uninstalled successfully! Uninstallation takes effect immediately."
+  logandprint "[INFO]: atvoss package uninstalled successfully! Uninstallation takes effect immediately."
 }
 
 main "$@"

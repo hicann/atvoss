@@ -29,9 +29,9 @@ message(STATUS "CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
 message(STATUS "CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 
-set(script_prefix ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts)
+set(script_prefix ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts)
 install(DIRECTORY ${script_prefix}/
-  DESTINATION atvos/script
+  DESTINATION atvoss/script
   FILE_PERMISSIONS
   OWNER_READ OWNER_WRITE OWNER_EXECUTE  # 文件权限
   GROUP_READ GROUP_EXECUTE
@@ -52,7 +52,7 @@ set(SCRIPTS_FILES
   ${CMAKE_SOURCE_DIR}/scripts/package/common/sh/version_compatiable.inc
 )
 install(FILES ${SCRIPTS_FILES}
-  DESTINATION atvos/script
+  DESTINATION atvoss/script
 )
 set(COMMON_FILES
   ${CMAKE_SOURCE_DIR}/scripts/package/common/sh/install_common_parser.sh
@@ -78,10 +78,10 @@ install(FILES ${CMAKE_SOURCE_DIR}/version.info
   DESTINATION .
 )
 install(FILES ${CONF_FILES}
-  DESTINATION atvos/conf
+  DESTINATION atvoss/conf
 )
 install(FILES ${PACKAGE_FILES}
-  DESTINATION atvos/script
+  DESTINATION atvoss/script
 )
 install(FILES ${LATEST_MANGER_FILES}
   DESTINATION latest_manager
@@ -90,15 +90,15 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/scripts/package/latest_manager/scripts/
   DESTINATION latest_manager
 )
 set(BIN_FILES
-  ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts/prereq_check.bash
-  ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts/prereq_check.csh
-  ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts/prereq_check.fish
-  ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts/setenv.bash
-  ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts/setenv.csh
-  ${CMAKE_SOURCE_DIR}/scripts/package/atvos/scripts/setenv.fish
+  ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts/prereq_check.bash
+  ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts/prereq_check.csh
+  ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts/prereq_check.fish
+  ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts/setenv.bash
+  ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts/setenv.csh
+  ${CMAKE_SOURCE_DIR}/scripts/package/atvoss/scripts/setenv.fish
 )
 install(FILES ${BIN_FILES}
-  DESTINATION atvos/bin
+  DESTINATION atvoss/bin
 )
 
 # ============= CPack =============

@@ -8,12 +8,12 @@
  * See LICENSE in the root of the software repository for the full text of the License.
  */
 
-#ifndef ATVOS_DEV_TILE_TRANSCENDENTAL_H
-#define ATVOS_DEV_TILE_TRANSCENDENTAL_H
+#ifndef ATVOSS_DEV_TILE_TRANSCENDENTAL_H
+#define ATVOSS_DEV_TILE_TRANSCENDENTAL_H
 
 #include "tile_evaluator_common.h"
 
-namespace ATVOS::Tile::Eval {
+namespace ATVOSS::Tile::Eval {
 
 /*!
  * \brief Broadcast calculation based on the expression
@@ -22,7 +22,7 @@ namespace ATVOS::Tile::Eval {
  * \param[in] tail, Calculate the length of the data
  * \return Broadcast Expression calculation
  */
-template<typename T, typename U, ATVOS::Patterns::Pattern pattern>
+template<typename T, typename U, ATVOSS::Patterns::Pattern pattern>
 struct Evaluator<OpAssign<T, OpBroadcast<pattern, U>>> {
     using Type = void;
 
@@ -47,7 +47,7 @@ struct Evaluator<OpAssign<T, OpBroadcast<pattern, U>>> {
  * \param[in] tail, Calculate the length of the data
  * \return ReduceSum Expression calculation
  */
-template<typename T, typename U, ATVOS::Patterns::Pattern pattern>
+template<typename T, typename U, ATVOSS::Patterns::Pattern pattern>
 struct Evaluator<OpAssign<T, OpReduceSum<pattern, U>>> {
     using Type = void;
 
@@ -65,4 +65,4 @@ struct Evaluator<OpAssign<T, OpReduceSum<pattern, U>>> {
     }
 };
 }
-#endif //ATVOS_DEV_TILE_TRANSCENDENTAL_H
+#endif //ATVOSS_DEV_TILE_TRANSCENDENTAL_H

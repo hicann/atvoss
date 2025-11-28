@@ -23,7 +23,7 @@ RESET_MOD="750"
 # db.info文件格式如下
 # ---
 # CommonLib|atc,fwkacllib
-# Atvos|atc,fwkacllib
+# Atvoss|atc,fwkacllib
 # ---
 # 使用"|"分隔模块名和包名列表，包名列表使用","分隔
 # 文件中块名保持以升序排序
